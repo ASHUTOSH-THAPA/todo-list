@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .todo-form {
+            margin-bottom: 20px;
+        }
+        .todo-item {
+            padding: 10px;
+            margin: 5px 0;
+            background: #f4f4f4;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .completed {
+            text-decoration: line-through;
+            color: #888;
+        }
+        .actions {
+            display: flex;
+            gap: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>To-Do List</h1>
+    
+    <!-- Form to add new todos -->
+    <form class="todo-form" action="/" method="POST">
+        <input type="text" name="task" placeholder="Add a new task" required>
+        <button type="submit">Add</button>
+    </form>
+    
+    <!-- List of todos -->
+    <div class="todo-list">
+        {% for todo in todos %}
+            <div class="todo-item {% if todo[2] == 'completed' %}completed{% endif %}">
+                <span>{{ todo[1] }}</span>  <!-- Display the task -->
+                <div class="actions">
+                    <!-- Link to toggle status -->
+                    {% if todo[2] == 'pending' %}
+                        <a href="{{ url_for('update', id=todo[0], status='completed') }}">✓</a>
+                    {% else %}
+                        <a href="{{ url_for('update', id=todo[0], status='pending') }}">↻</a>
+                    {% endif %}
+                    <!-- Link to delete -->
+                    <a href="{{ url_for('delete', id=todo[0]) }}">✗</a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</body>
+</html>
